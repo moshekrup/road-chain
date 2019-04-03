@@ -1,5 +1,6 @@
 const BigchainDB = require('bigchaindb-driver');
 const { dbchainhost }  = require('../config');
+const cryptoUtils = require('../utils/crypto');
 // const API_PATH = 'https://localhost:9984/api/v1/';
 // const conn = new BigchainDB.Connection(API_PATH);
 // return conn;
@@ -11,5 +12,36 @@ const getInstance = () => {
     return connection; 
 }
 
+const createTransaction = ({data, metadata, issuer, outputOwner}) => {
+    return BigchainDB.Transaction.makeCreateTransaction(
+        // Asset field
+        {
+            data,
+        },
+        // Metadata field, contains information about the transaction itself
+        // (can be `null` if not needed)
+        {
+            metadata,
+        },
+        // Output. For this case we create a simple Ed25519 condition
+        [BigchainDB.Transaction.makeOutput(
+            BigchainDB.Transaction.makeEd25519Condition(outputOwner))],
+        // Issuers
+        issuer
+    );  
+}
 
-module.exports = getInstance;
+const signedTransaction = (tx, key) => {
+    return BigchainDB.Transaction.signTransaction(tx, key);
+}
+
+const getKeyPair = async() => {
+    return new BigchainDB.Ed25519Keypair(cryptoUtils.getWallet());
+}
+
+module.exports = {
+    getInstance,
+    createTransaction,
+    getKeyPair,
+    signedTransaction,
+};

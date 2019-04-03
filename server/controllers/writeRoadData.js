@@ -1,11 +1,20 @@
-const BigchainDB = require('bigchaindb-driver');
-const getInstance = require('../db/bigchaindb');
-const cryptoUtils = require('../utils/crypto');
+const {getInstance, createTransaction, getKeyPair, signedTransaction} = require('../db/bigchaindb');
+const {getAccidentEvent} = require('../model/data');
 
-// const keyPair = new BigchainDB.Ed25519Keypair(cryptoUtils.getWallet())
+const keyPair = getKeyPair();
 
-const getRoadDataController = async(req, res, next) => {
-    const dbchain = getInstance();
+const writeRoadDataController = async(message) => {
+    try {
+        const dbchain = getInstance();
+        const data = getAccidentEvent(message);
+        const transaction = createTransaction({data, issuer: keyPair.publicKey, outputOwner: keyPair.publicKey});
+        const txSigned = signedTransaction(transaction, keyPair.privateKey);
+        return await dbchain.postTransactionCommit(txSigned);
+        // res.json({data: transactionId});
+        // next();
+    } catch(err) {
+        // next(err);
+    }
 }
 
-module.exports = getRoadDataController;
+module.exports = writeRoadDataController;

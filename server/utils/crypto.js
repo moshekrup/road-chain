@@ -1,8 +1,9 @@
 const bip39 = require('bip39')
 
 const getWallet = () => {
-    return bip39.mnemonicToSeed('seedPhrase').slice(0,32);
+    const seed = bip39.mnemonicToSeedSync('seedPhrase');
+    return seed.slice(0, 32)
 }
 
-module.exports = getWallet;
+module.exports = { getWallet };
 
