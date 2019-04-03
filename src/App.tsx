@@ -9,17 +9,6 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { theme } from './theme';
 import { socket } from './webSocket';
 
-const events: Event[] = [
-  {
-    id: '1',
-    type: 'police',
-  },
-  {
-    id: '2',
-    type: 'traffic'
-  }
-];
-
 @(withStyles as any)({
   root: {
     width: '100%',
@@ -41,29 +30,32 @@ export default class App extends React.PureComponent<
     classes?: any,
   },
   {
-    mode: 'normal' | 'choose-location'
+    mode: 'normal' | 'choose-location',
+    events: Event[],
   }
 > {
   constructor(props: any) {
     super(props);
 
     this.state = {
-      mode: 'normal'
+      mode: 'normal',
+      events: [],
     };
   }
 
   onMapClicked = (lat: number, lng: number) => {
     if (this.state.mode === 'choose-location') {
-      socket.send(JSON.stringify({
-        type: 'traffic',
-          geoJson: {
-            type: "Point", 
-            coordinates:[lat, lng]
-        }
-      }));
-
       this.setState({
         mode: 'normal',
+        events: [
+          ...this.state.events,
+          {
+            id: this.state.events.length + '',
+            type: 'police',
+            latitude: lat,
+            longitude: lng,
+          }
+        ]
       });
     }
   }
@@ -78,12 +70,13 @@ export default class App extends React.PureComponent<
             <Sidebar
               mode={this.state.mode}
               onAddClicked={() => this.setState({mode: 'choose-location'})} 
-              events={events} />
+              events={this.state.events} />
             <BaseMap
               className={this.props.classes.map} 
               lat={51.505} 
               lng={-0.09} 
               zoom={18}
+              events={this.state.events}
               onClick={this.onMapClicked} />
           </div>
         </div>

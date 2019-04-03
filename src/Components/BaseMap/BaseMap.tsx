@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import Animate from '../Animate/Animate';
 import * as Leaflet from 'leaflet';
-
-// import './App.css';
+import { Event } from '../../Models/Event'; 
 
 type Props = {
   lat: number;
@@ -11,6 +10,7 @@ type Props = {
   zoom: number;
   className: string;
   onClick: (lat: number, lng: number) => void;
+  events: Event[];
 }
 
 export default class BaseMap extends PureComponent<Props> {
@@ -35,11 +35,16 @@ export default class BaseMap extends PureComponent<Props> {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position}>
+
+          {this.props.events.map(event =>
+            <Marker
+              position={{lat: event.latitude, lng: event.longitude}}
+              key={event.id}>
               <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+                
               </Popup>
-          </Marker>
+            </Marker>
+          )}
           {/* <Animate></Animate> */}
         </Map>
     );

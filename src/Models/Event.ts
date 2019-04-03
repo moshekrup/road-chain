@@ -1,4 +1,6 @@
 export interface Event {
   id: string;
-  type: 'police' | 'traffic';
+  type: 'police' | 'accident' | 'traffic' | 'cyber';
+  latitude: number;
+  longitude: number;
 }
