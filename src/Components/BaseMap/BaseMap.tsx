@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import Animate from '../Animate/Animate';
 import * as Leaflet from 'leaflet';
 import { Event } from '../../Models/Event'; 
 
@@ -40,12 +39,8 @@ export default class BaseMap extends PureComponent<Props> {
             <Marker
               position={{lat: event.latitude, lng: event.longitude}}
               key={event.id}>
-              <Popup>
-                
-              </Popup>
             </Marker>
           )}
-          {/* <Animate></Animate> */}
         </Map>
     );
   }

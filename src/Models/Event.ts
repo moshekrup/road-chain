@@ -4,3 +4,10 @@ export interface Event {
   latitude: number;
   longitude: number;
 }
+
+export const eventTypeToName: {[type in Event['type']]: string} = {
+  'cyber': 'Cyber attack!',
+  'police': 'Police',
+  'accident': 'Accident',
+  'traffic': 'Traffic',
+};

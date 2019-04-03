@@ -1,20 +1,13 @@
 import React from 'react'
 import { withStyles, MenuItem } from '@material-ui/core';
 import ListItem from './ListItem';
-import { Event } from '../Models/Event';
+import { Event, eventTypeToName } from '../Models/Event';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { Mode } from '../Models/Mode';
 import Fade from '@material-ui/core/Fade';
 import Menu from '@material-ui/core/Menu';
 import { TransitionGroup } from 'react-transition-group';
 
-const eventTypeToName: {[type in Event['type']]: string} = {
-  'cyber': 'I\'m being cybered, man',
-  'police': 'Police',
-  'accident': 'Accident',
-  'traffic': 'Traffic',
-};
 @(withStyles as any)({
   root: {
     width: 400,
@@ -45,9 +38,7 @@ const eventTypeToName: {[type in Event['type']]: string} = {
     paddingTop: 10,
   },
   listItem: {
-    // ['&:not(:first-child)']: {
-      marginTop: 10,
-    // }
+    marginTop: 10,
   }
 })
 export default class Sidebar extends React.PureComponent<
@@ -55,7 +46,7 @@ export default class Sidebar extends React.PureComponent<
     classes?: any,
     events: Event[],
     onAddClicked: (type: Event['type']) => void,
-    mode: Mode,
+    isChoosingLocation: boolean,
   },
   {
     chooseReportTypeAnchorElement: HTMLElement | null,
@@ -67,7 +58,12 @@ export default class Sidebar extends React.PureComponent<
     });
   }
 
-  onClose = () => {
+  onReportTypeSelected = (eventType: Event['type']) => {
+    this.closeMenu();
+    this.props.onAddClicked(eventType);
+  }
+
+  closeMenu = () => {
     this.setState({
       chooseReportTypeAnchorElement: null,
     });
@@ -85,7 +81,7 @@ export default class Sidebar extends React.PureComponent<
     return (
       <div className={this.props.classes.root}>
         <Fade 
-          in={this.props.mode === 'choose-location'}
+          in={this.props.isChoosingLocation}
           mountOnEnter
           unmountOnExit>
           <div className={this.props.classes.chooseLocationOverlay}>
@@ -100,15 +96,15 @@ export default class Sidebar extends React.PureComponent<
           <AddIcon />
         </Fab>
 
-
         <Menu
           anchorEl={this.state.chooseReportTypeAnchorElement}
           open={this.state.chooseReportTypeAnchorElement != null}
-          onClose={this.onClose}>
+          onClose={this.closeMenu}>
           {
             Object.keys(eventTypeToName).map(key =>
               <MenuItem 
-                onClick={() => this.props.onAddClicked(key as Event['type'])}>
+                key={key}
+                onClick={() => this.onReportTypeSelected(key as Event['type'])}>
                 {eventTypeToName[key as Event['type']]}
               </MenuItem>
             )

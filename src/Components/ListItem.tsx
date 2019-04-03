@@ -1,13 +1,17 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core';
+import { Event, eventTypeToName } from '../Models/Event';
 import policeIcon from '../Assets/police-icon.png';
-import { Event } from '../Models/Event';
+import trafficIcon from '../Assets/traffic-icon.png';
+import accidentIcon from '../Assets/accident-icon.png';
+import cyberIcon from '../Assets/cyber-icon.png';
+import Card from '@material-ui/core/Card';
 
 const eventTypeToIconUrl: {[eventType in Event['type']]: string} = {
   police: policeIcon,
-  traffic: policeIcon,
-  accident: policeIcon,
-  cyber: policeIcon,
+  traffic: trafficIcon,
+  accident: accidentIcon,
+  cyber: cyberIcon,
 };
 
 function mergeClassNames(classNames: string[]): string {
@@ -51,7 +55,7 @@ export default class ListItem extends React.PureComponent<
           className={this.props.classes.icon} />
 
         <div className={this.props.classes.content}>
-          Police Event
+          {eventTypeToName[this.props.event.type]}
         </div>
       </div>
     );

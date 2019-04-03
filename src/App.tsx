@@ -30,7 +30,9 @@ export default class App extends React.PureComponent<
     classes?: any,
   },
   {
-    mode: 'normal' | 'choose-location',
+    editingReport: {
+      type: Event['type'],
+    } | null,
     events: Event[],
   }
 > {
@@ -38,20 +40,20 @@ export default class App extends React.PureComponent<
     super(props);
 
     this.state = {
-      mode: 'normal',
+      editingReport: null,
       events: [],
     };
   }
 
   onMapClicked = (lat: number, lng: number) => {
-    if (this.state.mode === 'choose-location') {
+    if (this.state.editingReport !== null) {
       this.setState({
-        mode: 'normal',
+        editingReport: null,
         events: [
           ...this.state.events,
           {
             id: this.state.events.length + '',
-            type: 'police',
+            type: this.state.editingReport.type,
             latitude: lat,
             longitude: lng,
           }
@@ -60,7 +62,36 @@ export default class App extends React.PureComponent<
     }
   }
 
+  onEventTypeSelected = (eventType: Event['type']) => {
+    this.setState({
+      editingReport: {
+        type: eventType
+      }
+    });
+  }
+
+  async reloadEvents() {
+    const response = await fetch('getRoadData', {
+      method: 'POST',
+      body: JSON.stringify({
+        location: [32.0804808, 34.7805274],
+        radius: 10
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log(response);
+  }
+
+  componentDidMount() {
+    this.reloadEvents();
+  }
+
   render() {
+    console.log(this.state.events);
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className={this.props.classes.root}>
@@ -68,8 +99,8 @@ export default class App extends React.PureComponent<
 
           <div className={this.props.classes.drawerAndMap}>
             <Sidebar
-              mode={this.state.mode}
-              onAddClicked={() => this.setState({mode: 'choose-location'})} 
+              isChoosingLocation={this.state.editingReport !== null}
+              onAddClicked={this.onEventTypeSelected} 
               events={this.state.events} />
             <BaseMap
               className={this.props.classes.map} 
