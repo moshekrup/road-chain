@@ -99,7 +99,7 @@ upnp = false
 addr_book_file = "config/addrbook.json"
 
 # Set true for strict address routability rules
-addr_book_strict = true
+addr_book_strict = false
 
 # Time to wait before flushing messages out on the connection, in ms
 flush_throttle_timeout = 100
