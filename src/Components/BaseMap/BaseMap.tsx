@@ -7,6 +7,7 @@ type Props = {
   lat: number;
   lng: number;
   zoom: number;
+  className: string;
 }
 
 export default class BaseMap extends PureComponent<Props> {
@@ -16,18 +17,23 @@ export default class BaseMap extends PureComponent<Props> {
       lng: this.props.lng
     };
 
+    console.log(this.props.className);
+
     return (
-        <Map center={position} zoom={this.props.zoom}>
-            <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={position}>
-                <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-            </Marker>
-            {/* <Animate></Animate> */}
+        <Map 
+          className={this.props.className}
+          center={position}
+          zoom={this.props.zoom}>
+          <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position}>
+              <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+          </Marker>
+          {/* <Animate></Animate> */}
         </Map>
     );
   }
