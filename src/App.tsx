@@ -38,8 +38,29 @@ const events: Event[] = [
 export default class App extends React.PureComponent<
   {
     classes?: any,
+  },
+  {
+    mode: 'normal' | 'choose-location'
   }
 > {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      mode: 'normal'
+    };
+  }
+
+  onMapClicked = (lat: number, lng: number) => {
+    if (this.state.mode === 'choose-location') {
+      
+
+      this.setState({
+        mode: 'normal',
+      });
+    }
+  }
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
@@ -47,12 +68,16 @@ export default class App extends React.PureComponent<
           <Toolbar />
 
           <div className={this.props.classes.drawerAndMap}>
-            <Sidebar events={events} />
+            <Sidebar
+              mode={this.state.mode}
+              onAddClicked={() => this.setState({mode: 'choose-location'})} 
+              events={events} />
             <BaseMap
               className={this.props.classes.map} 
               lat={51.505} 
               lng={-0.09} 
-              zoom={18}/>
+              zoom={18}
+              onClick={this.onMapClicked} />
           </div>
         </div>
       </MuiThemeProvider>

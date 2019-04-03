@@ -1,0 +1,1 @@
+export type Mode = 'normal' | 'choose-location';
