@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core';
 import { Event } from './Models/Event';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { theme } from './theme';
+import { socket } from './webSocket';
 
 const events: Event[] = [
   {
@@ -53,7 +54,13 @@ export default class App extends React.PureComponent<
 
   onMapClicked = (lat: number, lng: number) => {
     if (this.state.mode === 'choose-location') {
-      
+      socket.send(JSON.stringify({
+        type: 'traffic',
+          geoJson: {
+            type: "Point", 
+            coordinates:[lat, lng]
+        }
+      }));
 
       this.setState({
         mode: 'normal',

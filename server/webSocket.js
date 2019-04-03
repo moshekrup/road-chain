@@ -10,7 +10,7 @@ wsServer.on('connection', ws => {
         const json = JSON.parse(message);
         console.log('received: %s', json);
         const transactionId = await write(json);
-        ws.send({data: transactionId});
+        ws.send(JSON.stringify({data: transactionId}));
     });
   
     wsbigchain.on('open', () => {
