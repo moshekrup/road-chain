@@ -4,10 +4,11 @@ import './App.css';
 import Toolbar from './Components/Toolbar';
 import Sidebar from './Components/Sidebar';
 import { withStyles } from '@material-ui/core';
-import { Event } from './Models/Event';
+import { Event, ServerEvent, serverEventToEvent } from './Models/Event';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { theme } from './theme';
 import { socket } from './webSocket';
+import { type } from 'os';
 
 @(withStyles as any)({
   root: {
@@ -33,6 +34,7 @@ export default class App extends React.PureComponent<
     editingReport: {
       type: Event['type'],
     } | null,
+    isLoading: boolean,
     events: Event[],
   }
 > {
@@ -42,6 +44,7 @@ export default class App extends React.PureComponent<
     this.state = {
       editingReport: null,
       events: [],
+      isLoading: false,
     };
   }
 
@@ -70,24 +73,45 @@ export default class App extends React.PureComponent<
     });
   }
 
-  async reloadEvents() {
-    const response = await fetch('getRoadData', {
-      method: 'POST',
-      body: JSON.stringify({
-        location: [32.0804808, 34.7805274],
-        radius: 10
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  async reloadEvents(latitude: number, longitude: number) {
+    this.setState({
+      isLoading: true
     });
 
-    console.log(response);
+    try {
+      const response = await fetch('http://localhost:9000/getRoadData', {
+        method: 'POST',
+        body: JSON.stringify({
+          location: [32.0804808, 34.7805274],
+          radius: 10
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const events: ServerEvent[] = await response.json();
+        console.log(events);
+        this.setState({
+          events: events.map(serverEventToEvent)
+        });
+      }
+      else {
+        console.error(response);
+        throw new Error('Failed to load road data');
+      }
+    }
+    finally {
+      this.setState({
+        isLoading: false,
+      });
+    }
   }
 
-  componentDidMount() {
-    this.reloadEvents();
-  }
+  // componentDidMount() {
+  //   this.reloadEvents();
+  // }
 
   render() {
     console.log(this.state.events);
@@ -101,14 +125,16 @@ export default class App extends React.PureComponent<
             <Sidebar
               isChoosingLocation={this.state.editingReport !== null}
               onAddClicked={this.onEventTypeSelected} 
-              events={this.state.events} />
+              events={this.state.events}
+              isLoading={this.state.isLoading} />
             <BaseMap
               className={this.props.classes.map} 
               lat={51.505} 
               lng={-0.09} 
               zoom={18}
               events={this.state.events}
-              onClick={this.onMapClicked} />
+              onClick={this.onMapClicked}
+              onMoved={this.reloadEvents} />
           </div>
         </div>
       </MuiThemeProvider>

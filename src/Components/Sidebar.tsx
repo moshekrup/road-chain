@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Fade from '@material-ui/core/Fade';
 import Menu from '@material-ui/core/Menu';
 import { TransitionGroup } from 'react-transition-group';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 @(withStyles as any)({
   root: {
@@ -39,6 +40,12 @@ import { TransitionGroup } from 'react-transition-group';
   },
   listItem: {
     marginTop: 10,
+  },
+  loaderContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
   }
 })
 export default class Sidebar extends React.PureComponent<
@@ -47,6 +54,7 @@ export default class Sidebar extends React.PureComponent<
     events: Event[],
     onAddClicked: (type: Event['type']) => void,
     isChoosingLocation: boolean,
+    isLoading: boolean,
   },
   {
     chooseReportTypeAnchorElement: HTMLElement | null,
@@ -88,6 +96,13 @@ export default class Sidebar extends React.PureComponent<
             Choose location on map
           </div>
         </Fade>
+
+        {this.props.isLoading ?
+          <div className={this.props.classes.loaderContainer}>
+            <CircularProgress />
+          </div> :
+          null
+        }
 
         <Fab
           onClick={this.onAddClicked as any} 

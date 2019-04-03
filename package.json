@@ -8,6 +8,7 @@
     "@types/react": "^16.8.10",
     "@types/react-leaflet": "^2.2.1",
     "leaflet": "^1.4.0",
+    "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-leaflet": "^2.2.1",
@@ -29,5 +30,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/lodash": "^4.14.123"
+  }
 }

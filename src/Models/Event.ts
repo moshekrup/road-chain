@@ -11,3 +11,21 @@ export const eventTypeToName: {[type in Event['type']]: string} = {
   'accident': 'Accident',
   'traffic': 'Traffic',
 };
+
+export function serverEventToEvent(serverEvent: ServerEvent): Event {
+  return {
+    type: serverEvent.type,
+    id: serverEvent.datetime,
+    latitude: serverEvent.geoJson.coordinates[0],
+    longitude: serverEvent.geoJson.coordinates[1],
+  };
+}
+
+export interface ServerEvent {
+  datetime: string;
+  geoJson: {
+    type: 'Point',
+    coordinates: number[],
+  },
+  type: Event['type']
+}
