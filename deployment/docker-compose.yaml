@@ -12,6 +12,7 @@ services:
     image: bigchaindb/bigchaindb:2.0.0-beta9
     ports:
       - 127.0.0.1:9984:9984
+      - 127.0.0.1:9985:9985
     depends_on:
       - mongodb
       - tendermint
