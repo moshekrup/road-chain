@@ -6,4 +6,12 @@ const getInstance = async() => {
     return db;
 }
 
-module.exports = getInstance;
+const ensureIndex = async(field) => {
+    const dbInstance = await getInstance();
+    dbInstance.ensureIndex({[field]: '2d'});
+}
+
+module.exports = {
+    getInstance,
+    ensureIndex,
+};

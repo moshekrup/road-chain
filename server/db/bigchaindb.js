@@ -20,9 +20,7 @@ const createTransaction = ({data, metadata, issuer, outputOwner}) => {
         },
         // Metadata field, contains information about the transaction itself
         // (can be `null` if not needed)
-        {
-            metadata,
-        },
+        null,
         // Output. For this case we create a simple Ed25519 condition
         [BigchainDB.Transaction.makeOutput(
             BigchainDB.Transaction.makeEd25519Condition(outputOwner))],
