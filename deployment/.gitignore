@@ -1,1 +1,2 @@
-/tendermint*/data/*.db
+/tendermint-example/data/*.db
+/tendermint
