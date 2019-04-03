@@ -8,10 +8,10 @@ testWS.on('message', message => {
 
 testWS.on('open', function open() {
     testWS.send(JSON.stringify({
-        "type" :"traffic",
+        "type" :"accident",
         "geoJson": {
             "type": "Point", 
-            "coordinates": [32,5345,646]
+            "coordinates":[32.0804808, 34.7805274]
         }
     }));
 });
