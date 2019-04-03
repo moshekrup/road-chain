@@ -20,6 +20,7 @@ const ensureIndex =  dbDriver.ensureIndex("data.event.geoJson");
 ensureIndex.then(() => {
     app.post('/getRoadData', require('./controllers/getRoadData'));
     app.post('/writeRoadData', require('./controllers/writeRoadData'));
+    app.get('/getMyCurrentLocation', require('./controllers/getMyCurrentLocation'))
     app.use((err, req, res, next) => {
         console.log(err);
     });
