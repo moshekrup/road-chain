@@ -15,7 +15,7 @@ const getInstance = async() => {
 
 const ensureIndex = async(field) => {
     const dbInstance = await getInstance();
-    dbInstance.ensureIndex({[field]: '2d'});
+    dbInstance.db(mongoConfig.database).collection(mongoConfig.table).createIndex({[field]: '2dsphere'});
 }
 
 module.exports = {

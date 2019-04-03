@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const {isDevelopment, port} = require('./config');
+const dbDriver = require('./db/mongodb');
 
 const app = express();
 app.use(bodyParser.json({limit: '10mb'}));
@@ -15,14 +16,17 @@ if (isDevelopment) {
     app.use(cors(corsOptions));
 }
 
-app.post('/getRoadData', require('./controllers/getRoadData'));
-// app.use('/initMongoIndex',);
-app.post('/writeRoadData', require('./controllers/writeRoadData'));
+const ensureIndex =  dbDriver.ensureIndex("data.event.geoJson");
+ensureIndex.then(() => {
+    app.post('/getRoadData', require('./controllers/getRoadData'));
+    app.post('/writeRoadData', require('./controllers/writeRoadData'));
+    app.use((err, req, res, next) => {
+        console.log(err);
+    });
 
-app.use((err, req, res, next) => {
-    console.log(err);
-});
-
-app.listen(port, () => {
-    console.log('Server is listening on port %d', port)
-});
+    app.listen(port, () => {
+        console.log('Server is listening on port %d', port)
+    });
+}).catch((err) => {
+    console.log("error in index creation");
+})
