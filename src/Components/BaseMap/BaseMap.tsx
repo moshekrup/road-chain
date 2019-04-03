@@ -19,10 +19,9 @@ export default class BaseMap extends PureComponent<Props> {
     this.props.onClick(event.latlng.lat, event.latlng.lng)
   }
 
-  // onMapMoved = _.debounce((event: Leaflet.LeafletMouseEvent) => {
-  //   console.log(event);
-  //   // this.props.onMoved(event.latlng.lat, event.latlng.lng);
-  // }, 500)
+  onMouseUp = (event: Leaflet.LeafletMouseEvent) => {
+    this.props.onMoved(event.latlng.lat, event.latlng.lng);
+  }
 
   render() {
     const position = {
@@ -36,7 +35,7 @@ export default class BaseMap extends PureComponent<Props> {
           onClick={this.onMapClicked}
           center={position}
           zoom={this.props.zoom}
-          // onMove={this.onMapMoved}
+          onMouseUp={this.onMouseUp}
           >
           <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

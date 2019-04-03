@@ -7,12 +7,12 @@ import AddIcon from '@material-ui/icons/Add';
 import Fade from '@material-ui/core/Fade';
 import Menu from '@material-ui/core/Menu';
 import { TransitionGroup } from 'react-transition-group';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 @(withStyles as any)({
   root: {
     width: 400,
     position: 'relative',
+    backgroundColor: '#eee'
   },
   addButton: {
     position: 'absolute',
@@ -37,9 +37,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 10,
+    overflowY: 'scroll',
+    height: '100%',
   },
   listItem: {
     marginTop: 10,
+    '&:last-child': {
+      marginBottom: 20,
+    }
   },
   loaderContainer: {
     display: 'flex',
@@ -85,6 +90,14 @@ export default class Sidebar extends React.PureComponent<
     };
   }
 
+  getSortedEvents(): Event[] {
+    const copy = [...this.props.events];
+    copy.sort((event1, event2) => {
+      return event1.date.getTime() - event2.date.getTime();
+    });
+    return copy;
+  }
+
   render() {
     return (
       <div className={this.props.classes.root}>
@@ -97,11 +110,13 @@ export default class Sidebar extends React.PureComponent<
           </div>
         </Fade>
 
-        {this.props.isLoading ?
+        {
+          /*this.props.isLoading ?
           <div className={this.props.classes.loaderContainer}>
             <CircularProgress />
           </div> :
           null
+          */
         }
 
         <Fab
@@ -128,7 +143,7 @@ export default class Sidebar extends React.PureComponent<
 
         <div className={this.props.classes.eventsList}>
           <TransitionGroup>
-            {this.props.events.map(event =>
+            {this.getSortedEvents().map(event =>
               <Fade timeout={800} key={event.id}>
                 <ListItem 
                   className={this.props.classes.listItem}

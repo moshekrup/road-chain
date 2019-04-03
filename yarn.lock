@@ -971,6 +971,12 @@
     "@types/leaflet" "*"
     "@types/react" "*"
 
+"@types/react-timeago@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-timeago/-/react-timeago-4.1.0.tgz#e8ebc0add9de6d768fda610922879382bdc2f327"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^2.0.8":
   version "2.0.16"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.16.tgz#2dcb9e396ab385ee19c4af1c9caa469a14cd042f"
@@ -4728,6 +4734,12 @@ istanbul-reports@^1.5.1:
   dependencies:
     handlebars "^4.0.3"
 
+javascript-time-ago@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/javascript-time-ago/-/javascript-time-ago-2.0.1.tgz#11c85cac73f68eebf0256c9b1610e2ce2f429972"
+  dependencies:
+    relative-time-format "^0.1.3"
+
 jest-changed-files@^23.4.2:
   version "23.4.2"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-23.4.2.tgz#1eed688370cd5eebafe4ae93d34bb3b64968fe83"
@@ -7250,6 +7262,10 @@ react-scripts@2.1.8:
   optionalDependencies:
     fsevents "1.2.4"
 
+react-timeago@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-4.4.0.tgz#4520dd9ba63551afc4d709819f52b14b9343ba2b"
+
 react-transition-group@^2.2.1, react-transition-group@^2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.8.0.tgz#d6d8f635d81a0955b67348be5d017cff77d6c75f"
@@ -7448,6 +7464,10 @@ rehype-parse@^6.0.0:
 relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
+
+relative-time-format@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/relative-time-format/-/relative-time-format-0.1.3.tgz#d50f49d13f97c7f801afba600b1a4a0890755df2"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"

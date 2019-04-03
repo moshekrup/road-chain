@@ -20,7 +20,8 @@ import { type } from 'os';
   drawerAndMap: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 1
+    flex: 1,
+    overflow: 'hidden',
   },
   map: {
     flex: 1,
@@ -50,18 +51,7 @@ export default class App extends React.PureComponent<
 
   onMapClicked = (lat: number, lng: number) => {
     if (this.state.editingReport !== null) {
-      this.setState({
-        editingReport: null,
-        events: [
-          ...this.state.events,
-          {
-            id: this.state.events.length + '',
-            type: this.state.editingReport.type,
-            latitude: lat,
-            longitude: lng,
-          }
-        ]
-      });
+      
     }
   }
 
@@ -73,7 +63,7 @@ export default class App extends React.PureComponent<
     });
   }
 
-  async reloadEvents(latitude: number, longitude: number) {
+  reloadEvents = async(latitude: number, longitude: number) => {
     this.setState({
       isLoading: true
     });
@@ -82,8 +72,8 @@ export default class App extends React.PureComponent<
       const response = await fetch('http://localhost:9000/getRoadData', {
         method: 'POST',
         body: JSON.stringify({
-          location: [32.0804808, 34.7805274],
-          radius: 10
+          location: [latitude, longitude],
+          radius: 1000
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -108,10 +98,6 @@ export default class App extends React.PureComponent<
       });
     }
   }
-
-  // componentDidMount() {
-  //   this.reloadEvents();
-  // }
 
   render() {
     console.log(this.state.events);

@@ -3,6 +3,7 @@ export interface Event {
   type: 'police' | 'accident' | 'traffic' | 'cyber';
   latitude: number;
   longitude: number;
+  date: Date;
 }
 
 export const eventTypeToName: {[type in Event['type']]: string} = {
@@ -18,6 +19,7 @@ export function serverEventToEvent(serverEvent: ServerEvent): Event {
     id: serverEvent.datetime,
     latitude: serverEvent.geoJson.coordinates[0],
     longitude: serverEvent.geoJson.coordinates[1],
+    date: new Date(serverEvent.datetime),
   };
 }
 

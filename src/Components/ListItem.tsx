@@ -6,6 +6,7 @@ import trafficIcon from '../Assets/traffic-icon.png';
 import accidentIcon from '../Assets/accident-icon.png';
 import cyberIcon from '../Assets/cyber-icon.png';
 import Card from '@material-ui/core/Card';
+import TimeAgo from 'react-timeago';
 
 const eventTypeToIconUrl: {[eventType in Event['type']]: string} = {
   police: policeIcon,
@@ -27,14 +28,21 @@ function mergeClassNames(classNames: string[]): string {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 2,
-    paddingBottom: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: 'white',
   },
   icon: {
     height: 50,
     marginRight: 10,
+  },
+  title: {
+    fontSize: 18,
+  },
+  subtitle: {
+    color: '#444'
   }
 })
 export default class ListItem extends React.PureComponent<
@@ -47,7 +55,7 @@ export default class ListItem extends React.PureComponent<
 > {
   render() {
     return (
-      <div 
+      <Card 
         className={mergeClassNames([this.props.classes.root, this.props.className])}
         style={this.props.style}>
         <img 
@@ -55,9 +63,16 @@ export default class ListItem extends React.PureComponent<
           className={this.props.classes.icon} />
 
         <div className={this.props.classes.content}>
-          {eventTypeToName[this.props.event.type]}
+          <div className={this.props.classes.title}>
+            {eventTypeToName[this.props.event.type]}
+          </div>
+
+          <div className={this.props.classes.subtitle}>
+            <TimeAgo 
+              date={this.props.event.date} />
+          </div>
         </div>
-      </div>
+      </Card>
     );
   }
 }

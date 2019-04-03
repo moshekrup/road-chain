@@ -13,6 +13,7 @@
     "react-dom": "^16.8.6",
     "react-leaflet": "^2.2.1",
     "react-scripts": "2.1.8",
+    "react-timeago": "^4.4.0",
     "react-transition-group": "^2.8.0",
     "typescript": "^3.4.1"
   },
@@ -32,6 +33,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/lodash": "^4.14.123"
+    "@types/lodash": "^4.14.123",
+    "@types/react-timeago": "^4.1.0"
   }
 }
