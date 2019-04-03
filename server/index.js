@@ -15,7 +15,7 @@ if (isDevelopment) {
     app.use(cors(corsOptions));
 }
 
-app.use('/getRoadData', require('./controllers/getRoadData'));
+app.post('/getRoadData', require('./controllers/getRoadData'));
 // app.use('/initMongoIndex',);
 app.post('/writeRoadData', require('./controllers/writeRoadData'));
 
