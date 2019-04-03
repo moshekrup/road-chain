@@ -35,7 +35,9 @@ const signedTransaction = (tx, key) => {
     return BigchainDB.Transaction.signTransaction(tx, key);
 }
 
-const getKeyPair = async() => {
+const getKeyPair = () => {
+    // return new BigchainDB.Ed25519Keypair()
+
     return new BigchainDB.Ed25519Keypair(cryptoUtils.getWallet());
 }
 

@@ -3,7 +3,7 @@ const {bigchainWS, port} = require('./config');
 const write = require('./controllers/writeRoadData')
 
 const wsServer = new WebSocket.Server({ port });
-const wsbigchain = new WebSocket(bigchainWS);
+// const wsbigchain = new WebSocket(bigchainWS);
 
 wsServer.on('connection', (ws) => {
     ws.on('message', message => {
