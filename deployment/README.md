@@ -6,7 +6,7 @@ docker run \
     --rm \
     --user 1000:1000 \
     -v $(pwd)/tendermint:/tendermint \
-    tendermint/tendermint:v0.31.3 \
+    tendermint/tendermint:0.22.8 \
     init
 ```
 

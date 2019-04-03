@@ -1,27 +1,28 @@
 {
-  "genesis_time": "2019-04-03T12:07:08.461273859Z",
-  "chain_id": "test-chain-G8OrRR",
+  "genesis_time": "2019-04-03T12:55:44.060411103Z",
+  "chain_id": "test-chain-JxPgmU",
   "consensus_params": {
-    "block": {
+    "block_size_params": {
       "max_bytes": "22020096",
-      "max_gas": "-1",
-      "time_iota_ms": "1000"
+      "max_txs": "10000",
+      "max_gas": "-1"
     },
-    "evidence": {
+    "tx_size_params": {
+      "max_bytes": "10240",
+      "max_gas": "-1"
+    },
+    "block_gossip_params": {
+      "block_part_size_bytes": "65536"
+    },
+    "evidence_params": {
       "max_age": "100000"
-    },
-    "validator": {
-      "pub_key_types": [
-        "ed25519"
-      ]
     }
   },
   "validators": [
     {
-      "address": "BEDFF913D03CD61249D9DABA04AB5759C1E297FB",
       "pub_key": {
         "type": "tendermint/PubKeyEd25519",
-        "value": "/mVN1rEYTEvU2rjGq4tvsY3GEhBLlpPisNOypQHUADA="
+        "value": "Cg2mxyZbUbiGbXUzQfTO4ERR8Aibp2sJEZlhMviwTCI="
       },
       "power": "10",
       "name": ""

@@ -1,11 +1,32 @@
 version: '3'
 services:
   tendermint:
-    image: tendermint/tendermint:v0.31.3
+    image: tendermint/tendermint:0.22.8
     volumes:
-    - ./tendermint:/tendermint
+      - ./tendermint:/tendermint
     user: "1000:1000"
     ports:
       - 0.0.0.0:26656:26656
       - 0.0.0.0:26657:26657
+  bigchaindb:
+    image: bigchaindb/bigchaindb:2.0.0-beta9
+    ports:
+      - 127.0.0.1:9984:9984
+    depends_on:
+      - mongodb
+      - tendermint
+    environment:
+      BIGCHAINDB_DATABASE_BACKEND: localmongodb
+      BIGCHAINDB_DATABASE_HOST: mongodb
+      BIGCHAINDB_DATABASE_PORT: 27017
+      BIGCHAINDB_SERVER_BIND: 0.0.0.0:9984
+      BIGCHAINDB_WSSERVER_HOST: 0.0.0.0
+      BIGCHAINDB_WSSERVER_ADVERTISED_HOST: bigchaindb
+      BIGCHAINDB_TENDERMINT_HOST: tendermint
+      BIGCHAINDB_TENDERMINT_PORT: 26657
+  mongodb:
+    image: mongo:3.6
+    ports:
+      - 127.0.0.1:27017:27017
+    
 
