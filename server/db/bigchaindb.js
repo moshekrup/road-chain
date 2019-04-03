@@ -16,7 +16,7 @@ const createTransaction = ({data, metadata, issuer, outputOwner}) => {
     return BigchainDB.Transaction.makeCreateTransaction(
         // Asset field
         {
-            data,
+            event: data,
         },
         // Metadata field, contains information about the transaction itself
         // (can be `null` if not needed)
