@@ -128,8 +128,8 @@ export default class App extends React.PureComponent<
               isLoading={this.state.isLoading} />
             <BaseMap
               className={this.props.classes.map} 
-              lat={51.505} 
-              lng={-0.09} 
+              lat={32.0804808} 
+              lng={34.7805274} 
               zoom={18}
               events={this.state.events}
               onClick={this.onMapClicked}
