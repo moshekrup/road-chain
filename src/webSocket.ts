@@ -1,2 +1,2 @@
-const socket = new WebSocket('ws://localhost:9000', ['websocket']);
+const socket = new WebSocket('ws://localhost:9001', ['websocket']);
 export { socket };

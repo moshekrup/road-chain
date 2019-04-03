@@ -49,9 +49,22 @@ export default class App extends React.PureComponent<
     };
   }
 
+  async componentDidMount() {
+    await this.reloadEvents(32.0804808, 34.7805274);
+    socket.addEventListener('message', async(event: any) => {
+      await this.reloadEvents(32.0804808, 34.7805274);
+    });
+  }
+
   onMapClicked = (lat: number, lng: number) => {
     if (this.state.editingReport !== null) {
-      
+      socket.send(JSON.stringify({
+        type: this.state.editingReport.type,
+        geoJson: {
+          type: 'Point', 
+          coordinates: [lat,lng]
+        }
+      }));
     }
   }
 

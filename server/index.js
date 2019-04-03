@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const {isDevelopment, port} = require('./config');
 const dbDriver = require('./db/mongodb');
+const { createWebSocketServer } = require('./webSocket');
 
 const app = express();
 app.use(bodyParser.json({limit: '10mb'}));
@@ -16,7 +17,7 @@ if (isDevelopment) {
     app.use(cors(corsOptions));
 }
 
-const ensureIndex =  dbDriver.ensureIndex("data.event.geoJson");
+const ensureIndex = dbDriver.ensureIndex("data.event.geoJson");
 ensureIndex.then(() => {
     app.post('/getRoadData', require('./controllers/getRoadData'));
     app.post('/writeRoadData', require('./controllers/writeRoadData'));
@@ -25,6 +26,7 @@ ensureIndex.then(() => {
         console.log(err);
     });
 
+    createWebSocketServer();
     app.listen(port, () => {
         console.log('Server is listening on port %d', port)
     });

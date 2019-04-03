@@ -1,29 +1,29 @@
 const WebSocket = require('ws');
-const {bigchainWS, port} = require('./config');
+const {bigchainWS, wsPort} = require('./config');
 const write = require('./writeEvent')
 
-const wsServer = new WebSocket.Server({ port });
-const wsbigchain = new WebSocket(bigchainWS);
-
-wsServer.on('connection', ws => {
-    ws.on('message', async(message) => {
-        const json = JSON.parse(message);
-        console.log('received: %s', json);
-        const transactionId = await write(json);
-        ws.send(JSON.stringify({data: transactionId}));
-    });
-  
-    wsbigchain.on('open', () => {
-        console.log("CONNECTED")
+const createWebSocketServer = () => {
+    const wsServer = new WebSocket.Server({ port: wsPort });
+    const wsbigchain = new WebSocket(bigchainWS);
+    
+    wsServer.on('connection', ws => {
+        ws.on('message', async(message) => {
+            const json = JSON.parse(message);
+            console.log('received: %s', json);
+            const data = await write(json);
+            ws.send(JSON.stringify(data));
+        });
+      
+        wsbigchain.on('open', () => {
+            console.log("CONNECTED")
+        });
+        
+        wsbigchain.on('message', data => {
+            ws.send(JSON.stringify(data));
+        });
     });
     
-    wsbigchain.on('message', data => {
-        // const json = JSON.parse(data);
-        // console.log("\nTransactionId: ", json.transaction_id);
-        // console.log("AssetId: ", json.asset_id);
-        // console.log("BlockId: ", json.block_id);
-        ws.send(JSON.stringify(data));
-    });
-});
+    console.log('Web socket server is listening on port %d', wsPort)
+}
 
-console.log('Server is listening on port %d', port)
+module.exports = {createWebSocketServer};

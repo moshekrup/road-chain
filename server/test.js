@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const testWS = new WebSocket('ws://localhost:9000');
+const testWS = new WebSocket('ws://localhost:9001');
 
 testWS.on('message', message => {
     console.log(message);
