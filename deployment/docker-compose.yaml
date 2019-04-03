@@ -1,0 +1,10 @@
+version: '3'
+services:
+  tendermint:
+    image: tendermint/tendermint:v0.31.3
+    volumes:
+    - ./tendermint:/tendermint
+    user: "1000:1000"
+    ports:
+      - 26657:26657
+
