@@ -17,7 +17,7 @@ if (isDevelopment) {
 
 app.use('/getRoadData', require('./controllers/getRoadData'));
 // app.use('/initMongoIndex',);
-app.use('/writeRoadData', require('./controllers/writeRoadData'));
+app.post('/writeRoadData', require('./controllers/writeRoadData'));
 
 app.use((err, req, res, next) => {
     console.log(err);
