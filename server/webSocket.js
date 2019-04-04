@@ -8,11 +8,20 @@ const createWebSocketServer = () => {
     
     wsServer.on('connection', ws => {
         ws.on('message', async(message) => {
-            const json = JSON.parse(message);
-            console.log('received');
-            console.log(json);
-            const data = await write(json);
-            ws.send(JSON.stringify(data));
+            try {
+                const json = JSON.parse(message);
+                console.log('received');
+                console.log(json);
+                const data = await write(json);
+                ws.send(JSON.stringify(data));
+            }
+            catch (err) {
+                console.error(err);
+            }
+        });
+
+        ws.on('error', (err) => {
+            console.error(err);
         });
       
         wsbigchain.on('open', () => {

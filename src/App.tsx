@@ -10,6 +10,11 @@ import { theme } from './theme';
 import { socket } from './webSocket';
 import { type } from 'os';
 
+const initialLocation = {
+  latitude: 32.0804808,
+  longitude: 34.7805274,
+};
+
 @(withStyles as any)({
   root: {
     width: '100%',
@@ -37,6 +42,10 @@ export default class App extends React.PureComponent<
     } | null,
     isLoading: boolean,
     events: Event[],
+    location: {
+      latitude: number,
+      longitude: number,
+    }
   }
 > {
   constructor(props: any) {
@@ -46,18 +55,27 @@ export default class App extends React.PureComponent<
       editingReport: null,
       events: [],
       isLoading: false,
+      location: initialLocation,
     };
   }
 
   async componentDidMount() {
-    await this.reloadEvents(32.0804808, 34.7805274);
+    await this.reloadEvents();
     socket.addEventListener('message', async(event: any) => {
-      await this.reloadEvents(32.0804808, 34.7805274);
+      console.log('received new event');
+      await this.reloadEvents();
+    });
+    socket.addEventListener('error', (err) => {
+      console.error(err);
+    });
+    socket.addEventListener('close', () => {
+      console.log('closed connection');
     });
   }
 
   onMapClicked = (lat: number, lng: number) => {
     if (this.state.editingReport !== null) {
+      console.log('saving event');
       socket.send(JSON.stringify({
         type: this.state.editingReport.type,
         geoJson: {
@@ -79,7 +97,21 @@ export default class App extends React.PureComponent<
     });
   }
 
-  reloadEvents = async(latitude: number, longitude: number) => {
+  onMapMoved = (latitude: number, longitude: number) => {
+    console.log('map moved');
+    this.setState(
+      {
+        location: {
+          latitude,
+          longitude,
+        }
+      },
+      this.reloadEvents
+    );
+  }
+
+  reloadEvents = async() => {
+    console.log('reloading events');
     this.setState({
       isLoading: true
     });
@@ -88,7 +120,10 @@ export default class App extends React.PureComponent<
       const response = await fetch('http://localhost:9000/getRoadData', {
         method: 'POST',
         body: JSON.stringify({
-          location: [latitude, longitude],
+          location: [
+            this.state.location.latitude,
+            this.state.location.longitude
+          ],
           radius: 1000
         }),
         headers: {
@@ -116,8 +151,6 @@ export default class App extends React.PureComponent<
   }
 
   render() {
-    console.log(this.state.events);
-
     return (
       <MuiThemeProvider theme={theme}>
         <div className={this.props.classes.root}>
@@ -131,12 +164,12 @@ export default class App extends React.PureComponent<
               isLoading={this.state.isLoading} />
             <BaseMap
               className={this.props.classes.map} 
-              lat={32.0804808} 
-              lng={34.7805274} 
+              lat={initialLocation.latitude} 
+              lng={initialLocation.longitude} 
               zoom={18}
               events={this.state.events}
               onClick={this.onMapClicked}
-              onMoved={this.reloadEvents} />
+              onMoved={this.onMapMoved} />
           </div>
         </div>
       </MuiThemeProvider>
