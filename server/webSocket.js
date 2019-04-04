@@ -21,15 +21,30 @@ const createWebSocketServer = () => {
         });
 
         ws.on('error', (err) => {
+            console.error('error in client websocket');
             console.error(err);
+        });
+
+        ws.on('close', () => {
+            console.log('closing client websocket');
         });
       
         wsbigchain.on('open', () => {
-            console.log("CONNECTED")
+            console.log("bigchain CONNECTED")
         });
         
         wsbigchain.on('message', data => {
+            console.log('bigchain message');
             ws.send(JSON.stringify(data));
+        });
+
+        wsbigchain.on('error', (err) => {
+            console.error('error in bigchain websocket');
+            console.error(err);
+        });
+
+        wsbigchain.on('close', () => {
+            console.log('closing bigchain websocket');
         });
     });
     
