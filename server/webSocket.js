@@ -9,7 +9,8 @@ const createWebSocketServer = () => {
     wsServer.on('connection', ws => {
         ws.on('message', async(message) => {
             const json = JSON.parse(message);
-            console.log('received: %s', json);
+            console.log('received');
+            console.log(json);
             const data = await write(json);
             ws.send(JSON.stringify(data));
         });

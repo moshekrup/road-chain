@@ -65,6 +65,9 @@ export default class App extends React.PureComponent<
           coordinates: [lat,lng]
         }
       }));
+      this.setState({
+        editingReport: null,
+      });
     }
   }
 
