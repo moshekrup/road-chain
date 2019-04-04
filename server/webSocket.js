@@ -12,8 +12,8 @@ const createWebSocketServer = () => {
                 const json = JSON.parse(message);
                 console.log('received');
                 console.log(json);
-                const data = await write(json);
-                ws.send(JSON.stringify(data));
+                await write(json);
+                console.log('finish write event to blockchain')
             }
             catch (err) {
                 console.error(err);
@@ -35,7 +35,11 @@ const createWebSocketServer = () => {
         
         wsbigchain.on('message', data => {
             console.log('bigchain message');
-            ws.send(JSON.stringify(data));
+            try {
+                ws.send(JSON.stringify(data));
+            } catch (err) {
+                console.log(err);
+            }
         });
 
         wsbigchain.on('error', (err) => {
